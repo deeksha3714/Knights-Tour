@@ -1,23 +1,29 @@
-index.html
-
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Knight's Tour</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<h1>Knight's Tour Visualizer</h1>
+    <h1>Knight's Tour Visualizer</h1>
+    <p class="subtitle">Click a square to place the knight, then move manually or hit Solve!</p>
 
-<input type="number" id="size" placeholder="Enter N (e.g., 5)">
-<button onclick="createBoard()">Create Board</button>
-<button onclick="solveTour()">Solve</button>
-<button onclick="resetBoard()">Reset</button>
+    <!-- board size input -->
+    <div class="controls">
+        <input type="number" id="size" placeholder="Board size (e.g. 6)" min="5" max="10">
+        <button onclick="createBoard()">Create Board</button>
+        <button onclick="solveTour()">Solve</button>
+        <button onclick="resetBoard()">Reset</button>
+    </div>
 
-<div id="board"></div>
+    <p id="status-msg"></p>
 
-<script src="script.js"></script>
+    <!-- chessboard renders here -->
+    <div id="board"></div>
+
+    <script src="script.js"></script>
 </body>
 </html>
