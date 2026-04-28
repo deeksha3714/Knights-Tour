@@ -1,40 +1,112 @@
-style.css
+/* Knight's Tour - CSS Styling
+   We kept this pretty simple, mostly worked on getting the board centered and the colors looking decent */
 
 body {
     text-align: center;
-    font-family: Arial;
+    font-family: Georgia, serif;  /* switched from Arial, looks nicer imo */
+    background-color: #f5f0e8;
+    color: #333;
+    padding: 20px;
 }
 
+h1 {
+    font-size: 2rem;
+    margin-bottom: 5px;
+}
+
+.subtitle {
+    color: #666;
+    font-size: 0.95rem;
+    margin-bottom: 15px;
+}
+
+/* grouping the buttons and input together */
+.controls {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+    flex-wrap: wrap;
+}
+
+.controls input {
+    padding: 8px 12px;
+    font-size: 15px;
+    border: 1px solid #aaa;
+    border-radius: 4px;
+    width: 170px;
+}
+
+.controls button {
+    padding: 8px 16px;
+    font-size: 15px;
+    cursor: pointer;
+    background-color: #5a3e2b;
+    color: white;
+    border: none;
+    border-radius: 4px;
+}
+
+.controls button:hover {
+    background-color: #7a5c3f;
+}
+
+/* status message below the buttons */
+#status-msg {
+    font-size: 0.9rem;
+    color: #b00;
+    min-height: 20px;
+    margin-bottom: 8px;
+}
+
+/* the actual chessboard grid */
 #board {
     display: grid;
-    margin: 20px auto;
+    margin: 10px auto;
     width: fit-content;
+    border: 2px solid #333;
 }
 
 .cell {
     width: 60px;
     height: 60px;
-    border: 1px solid black;
+    border: 1px solid #333;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 18px;
+    font-size: 16px;
+    font-weight: bold;
     cursor: pointer;
     transition: all 0.3s ease;
+    user-select: none;
 }
 
+/* chess board coloring */
+.white { background-color: #f0d9b5; }
+.black { background-color: #b58863; color: white; }
+
+/* knight piece unicode symbol */
 .knight {
-    font-size: 28px;
+    font-size: 26px;
+    display: block;
+    line-height: 1;
 }
 
+/* current knight position */
 .current {
-    background-color: orange !important;
+    background-color: #e67e22 !important;
+    color: white;
 }
 
+/* highlight valid next moves */
 .hint {
-    background-color: yellow !important;
+    background-color: #f9e04b !important;
+    cursor: pointer;
 }
 
-.white { background-color: #eee; }
-.black { background-color: #555; color: white; }
-.start { background-color: green !important; }
+/* starting cell */
+.start {
+    background-color: #27ae60 !important;
+    color: white;
+}
