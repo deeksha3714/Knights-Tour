@@ -3,112 +3,98 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Knights Tour</title>
+  <title>Knights Tour - DSA Project</title>
 
-  <!-- google fonts - cinzel looks cool for a chess thing -->
-  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
-
+  <!-- using google fonts because default fonts look bad -->
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323:wght@400&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-  <!-- main wrapper, max width set in css -->
-  <div class="container">
+<div class="container">
 
-    <!-- title section -->
-    <header>
-      <div class="title">&#9822; Knight's Tour</div>
-      <!-- TODO: maybe add a description here later -->
-      <div class="subtitle">// visit every square exactly once</div>
-    </header>
+  <!-- ===== HEADING ===== -->
+  <h1 class="title">&#9822; KNIGHT'S TOUR</h1>
+  <p class="subtitle">DSA Mini Project &nbsp;|&nbsp; Warnsdorff's Heuristic</p>
+  <p class="subtitle2">Click any square to place knight, then click green squares to move</p>
 
-    <!-- controls: board size input + all buttons -->
-    <div class="setup-panel">
-      <div class="field">
-        <label>Board Size (N)</label>
-        <!-- min is 5 because smaller boards dont really work with knights -->
-        <input type="number" id="sizeInput" value="8" min="5" max="200" />
-      </div>
+  <!-- ===== INPUT + BUTTONS ===== -->
+  <div class="controls">
 
-      <button class="btn btn-gold" onclick="startGame()">New Game</button>
-
-      <!-- these are disabled at start, enabled once knight is placed -->
-      <button class="btn btn-outline" id="btnUndo"   onclick="undoMove()"          disabled>&#8617; Undo</button>
-      <button class="btn btn-outline" id="btnHint"   onclick="toggleHint()"        disabled>&#128161; Hint</button>
-      <button class="btn btn-ghost"   id="btnSolve"  onclick="autoSolveFromHere()" disabled>Auto-solve</button>
-      <button class="btn btn-danger"  id="btnGiveUp" onclick="giveUp()"            disabled>Give Up</button>
+    <div class="input-row">
+      <label for="sizeInput">Board Size (N):</label>
+      <!-- min 5 because knight cant really move on smaller boards -->
+      <input type="number" id="sizeInput" value="8" min="5" max="200" />
+      <span class="note">(try 8 for classic chess board)</span>
     </div>
 
-    <!-- HUD - shows live game stats -->
-    <div class="hud">
-      <div class="hud-card">
-        <div class="hud-label">Moves</div>
-        <div class="hud-val" id="hudMoves">-</div>
-      </div>
-      <div class="hud-card">
-        <div class="hud-label">Remaining</div>
-        <div class="hud-val" id="hudRemain">-</div>
-      </div>
-      <div class="hud-card">
-        <div class="hud-label">Valid Moves</div>
-        <div class="hud-val" id="hudValid">-</div>
-      </div>
-      <div class="hud-card">
-        <div class="hud-label">Board</div>
-        <div class="hud-val" id="hudSize">-</div>
-      </div>
+    <div class="btn-row">
+      <button id="btnNew"     onclick="startGame()">New Game</button>
+      <button id="btnUndo"    onclick="undoMove()"          disabled>&#8617; Undo</button>
+      <button id="btnHint"    onclick="toggleHint()"        disabled>Hint (Warnsdorff)</button>
+      <button id="btnSolve"   onclick="autoSolveFromHere()" disabled>Auto Solve</button>
+      <button id="btnGiveUp"  onclick="giveUp()"            disabled class="danger">Give Up</button>
     </div>
 
-    <!-- status message bar (changes color depending on game state) -->
-    <div class="status-bar idle" id="statusBar">
-      <div class="dot"></div>
-      <span id="statusText">Set a board size and press New Game to begin</span>
-    </div>
-
-    <!-- the actual board gets built here by javascript -->
-    <div class="board-wrap">
-      <div id="board"></div>
-    </div>
-
-    <!-- color legend so user knows what each color means -->
-    <div class="legend">
-      <span style="color:var(--gold); font-size:0.75rem; font-family:'Cinzel',serif;">Legend:</span>
-      <span class="leg-item"><span class="leg-sq" style="background:var(--light-sq)"></span> unvisited</span>
-      <span class="leg-item"><span class="leg-sq" style="background:var(--visited-light)"></span> visited</span>
-      <span class="leg-item"><span class="leg-sq" style="background:var(--knight-sq)"></span> knight</span>
-      <span class="leg-item"><span class="leg-sq" style="background:var(--valid-light)"></span> valid move</span>
-      <span class="leg-item"><span class="leg-sq" style="background:#6ab4e0"></span> hint (warnsdorffs best)</span>
-    </div>
-
-  </div><!-- end .container -->
-
-
-  <!-- popup when you win -->
-  <div class="overlay" id="overlayWin">
-    <div class="modal">
-      <div class="modal-title">Victory!</div>
-      <div class="modal-body" id="winBody"></div>
-      <div class="modal-btns">
-        <button class="btn btn-gold"  onclick="closeOverlay('overlayWin'); startGame()">Play Again</button>
-        <button class="btn btn-ghost" onclick="closeOverlay('overlayWin')">Review Board</button>
-      </div>
-    </div>
   </div>
 
-  <!-- popup when you get stuck / no moves left -->
-  <div class="overlay" id="overlayStuck">
-    <div class="modal">
-      <div class="modal-title red">No More Moves</div>
-      <div class="modal-body" id="stuckBody"></div>
-      <div class="modal-btns">
-        <button class="btn btn-gold"    onclick="closeOverlay('overlayStuck'); startGame()">Try Again</button>
-        <button class="btn btn-outline" onclick="closeOverlay('overlayStuck'); autoSolveFromHere()">Show Solution</button>
-        <button class="btn btn-ghost"   onclick="closeOverlay('overlayStuck')">Review Board</button>
-      </div>
-    </div>
+  <!-- ===== STATS ROW ===== -->
+  <!-- shows live info while playing -->
+  <div class="stats-row">
+    <span>Moves: <strong id="hudMoves">-</strong></span>
+    <span>Remaining: <strong id="hudRemain">-</strong></span>
+    <span>Valid moves now: <strong id="hudValid">-</strong></span>
+    <span>Board: <strong id="hudSize">-</strong></span>
   </div>
 
-  <script src="script.js"></script>
+  <!-- ===== STATUS MESSAGE ===== -->
+  <div id="statusBar" class="status-bar">
+    Click "New Game" to start!
+  </div>
+
+  <!-- ===== BOARD ===== -->
+  <!-- board div is empty - JS fills it in -->
+  <div class="board-wrap">
+    <div id="board"></div>
+  </div>
+
+  <!-- ===== LEGEND ===== -->
+  <div class="legend">
+    <b>Legend:</b>
+    <span class="leg-item"><span class="swatch" id="sw-unvisited"></span> Unvisited</span>
+    <span class="leg-item"><span class="swatch" id="sw-visited"></span> Visited</span>
+    <span class="leg-item"><span class="swatch" id="sw-knight"></span> Knight (you)</span>
+    <span class="leg-item"><span class="swatch" id="sw-valid"></span> Valid move</span>
+    <span class="leg-item"><span class="swatch" id="sw-hint"></span> Hint (best move)</span>
+  </div>
+
+</div><!-- end .container -->
+
+
+<!-- ===== WIN POPUP ===== -->
+<!-- hidden by default, shown when player wins -->
+<div class="overlay" id="overlayWin">
+  <div class="popup">
+    <h2>&#127881; YOU WIN!</h2>
+    <p id="winMsg"></p>
+    <button onclick="closePopup('overlayWin'); startGame()">Play Again</button>
+    <button onclick="closePopup('overlayWin')">See Board</button>
+  </div>
+</div>
+
+<!-- ===== STUCK POPUP ===== -->
+<div class="overlay" id="overlayStuck">
+  <div class="popup">
+    <h2 style="color:#e74c3c;">STUCK!</h2>
+    <p id="stuckMsg"></p>
+    <button onclick="closePopup('overlayStuck'); startGame()">Try Again</button>
+    <button onclick="closePopup('overlayStuck'); autoSolveFromHere()">Show Solution</button>
+    <button onclick="closePopup('overlayStuck')">Review</button>
+  </div>
+</div>
+
+
+<script src="script.js"></script>
 
 </body>
 </html>
