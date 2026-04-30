@@ -1,99 +1,28 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Knights Tour - DSA Project</title>
+    <meta charset="UTF-8">
+    <title>Knight's Tour</title>
 
-  <!-- using google fonts because default fonts look bad -->
-  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323:wght@400&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css">
+    <!-- linking css file -->
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<div class="container">
+<h1>Knight's Tour Visualizer</h1>
 
-  <!-- ===== HEADING ===== -->
-  <h1 class="title">&#9822; KNIGHT'S TOUR</h1>
-  <p class="subtitle">DSA Mini Project &nbsp;|&nbsp; Warnsdorff's Heuristic</p>
-  <p class="subtitle2">Click any square to place knight, then click green squares to move</p>
+<!-- input for board size -->
+<input type="number" id="size" placeholder="Enter board size (e.g. 5)">
 
-  <!-- ===== INPUT + BUTTONS ===== -->
-  <div class="controls">
+<!-- buttons -->
+<button onclick="createBoard()">Create Board</button>
+<button onclick="solveTour()">Solve</button>
+<button onclick="resetBoard()">Reset</button>
 
-    <div class="input-row">
-      <label for="sizeInput">Board Size (N):</label>
-      <!-- min 5 because knight cant really move on smaller boards -->
-      <input type="number" id="sizeInput" value="8" min="5" max="200" />
-      <span class="note">(try 8 for classic chess board)</span>
-    </div>
+<!-- board will be created here -->
+<div id="board"></div>
 
-    <div class="btn-row">
-      <button id="btnNew"     onclick="startGame()">New Game</button>
-      <button id="btnUndo"    onclick="undoMove()"          disabled>&#8617; Undo</button>
-      <button id="btnHint"    onclick="toggleHint()"        disabled>Hint (Warnsdorff)</button>
-      <button id="btnSolve"   onclick="autoSolveFromHere()" disabled>Auto Solve</button>
-      <button id="btnGiveUp"  onclick="giveUp()"            disabled class="danger">Give Up</button>
-    </div>
-
-  </div>
-
-  <!-- ===== STATS ROW ===== -->
-  <!-- shows live info while playing -->
-  <div class="stats-row">
-    <span>Moves: <strong id="hudMoves">-</strong></span>
-    <span>Remaining: <strong id="hudRemain">-</strong></span>
-    <span>Valid moves now: <strong id="hudValid">-</strong></span>
-    <span>Board: <strong id="hudSize">-</strong></span>
-  </div>
-
-  <!-- ===== STATUS MESSAGE ===== -->
-  <div id="statusBar" class="status-bar">
-    Click "New Game" to start!
-  </div>
-
-  <!-- ===== BOARD ===== -->
-  <!-- board div is empty - JS fills it in -->
-  <div class="board-wrap">
-    <div id="board"></div>
-  </div>
-
-  <!-- ===== LEGEND ===== -->
-  <div class="legend">
-    <b>Legend:</b>
-    <span class="leg-item"><span class="swatch" id="sw-unvisited"></span> Unvisited</span>
-    <span class="leg-item"><span class="swatch" id="sw-visited"></span> Visited</span>
-    <span class="leg-item"><span class="swatch" id="sw-knight"></span> Knight (you)</span>
-    <span class="leg-item"><span class="swatch" id="sw-valid"></span> Valid move</span>
-    <span class="leg-item"><span class="swatch" id="sw-hint"></span> Hint (best move)</span>
-  </div>
-
-</div><!-- end .container -->
-
-
-<!-- ===== WIN POPUP ===== -->
-<!-- hidden by default, shown when player wins -->
-<div class="overlay" id="overlayWin">
-  <div class="popup">
-    <h2>&#127881; YOU WIN!</h2>
-    <p id="winMsg"></p>
-    <button onclick="closePopup('overlayWin'); startGame()">Play Again</button>
-    <button onclick="closePopup('overlayWin')">See Board</button>
-  </div>
-</div>
-
-<!-- ===== STUCK POPUP ===== -->
-<div class="overlay" id="overlayStuck">
-  <div class="popup">
-    <h2 style="color:#e74c3c;">STUCK!</h2>
-    <p id="stuckMsg"></p>
-    <button onclick="closePopup('overlayStuck'); startGame()">Try Again</button>
-    <button onclick="closePopup('overlayStuck'); autoSolveFromHere()">Show Solution</button>
-    <button onclick="closePopup('overlayStuck')">Review</button>
-  </div>
-</div>
-
-
+<!-- linking js file -->
 <script src="script.js"></script>
 
 </body>
